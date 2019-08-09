@@ -11,7 +11,7 @@ router.post('/', validateSession, (req, res) => {
         movieTitle: req.body.review.movieTitle,
         poster: req.body.review.poster,
         userId: req.user.id,
-        username: req.body.review.username,
+        username: req.user.username,
         reviewRating: req.body.review.reviewRating,
         reviewText: req.body.review.reviewText,
         imdbId: req.body.review.imdbId
