@@ -6,14 +6,23 @@ const validateSession = require('../middleware/validate-session');
 
 router.post('/', validateSession, (req, res) => {
     Favorite.create({
-        movieTitle: req.body.favorite.movieTitle,
-        poster: req.body.favorite.poster,
+        movieTitle: req.body.movieTitle,
+        poster: req.body.poster,
         userId: req.user.id,
         username: req.user.username,
-        imdbId: req.body.favorite.imdbId
+        imdbId: req.body.imdbId
     }).then(favorite => res.status(200).json(favorite))
     .catch(err => res.status(500).json(req.errors))
 })
+
+// router.post('/', (req, res) => {
+//     Favorite.create({
+//         movieTitle: req.body.movieTitle,
+//         poster: req.body.poster,
+//         imdbId: req.body.imdbId
+//     }).then(favorite => res.status(200).json(favorite))
+//     .catch(err => res.status(500).json(req.errors))
+// })
 
 router.get('/myfavorites', validateSession, (req, res) => {
     Favorite.findAll({where: {userId: req.user.id}})
