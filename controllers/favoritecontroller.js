@@ -19,14 +19,8 @@ router.post('/', (req, res) => {
     Favorite.create({
         movieTitle: req.body.movieTitle,
         poster: req.body.poster,
-<<<<<<< HEAD
-        // userId: req.user.id,
-        // username: req.user.username,
-        imdbId: req.body.imdbId
-=======
         imdbId: req.body.imdbId,
         ranking: req.body.ranking
->>>>>>> ca36e4fa95613d9159c5c434d5ac0aec413be28f
     }).then(favorite => res.status(200).json(favorite))
     .catch(err => res.status(500).json(req.errors))
 })
