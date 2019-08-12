@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const sequelize = require('../smog-server/db');
+const sequelize = require('../db');
 const Favorite = sequelize.import('../models/favorite');
-const validateSession = require('../smog-server/middleware/validate-session');
+const validateSession = require('../middleware/validate-session');
 
 // router.post('/', validateSession, (req, res) => {
 //     Favorite.create({
