@@ -47,6 +47,12 @@ router.post('/login', (req, res) => {
     )
 })
 
+router.get('/username/:username', validateSession, (req, res) => {
+        User.findAll({where: {username: req.params.username}})
+        .then(user => res.status(200).json(user))
+        .catch(err => res.status(500).json({error: err}))
+})
+
 router.delete('/delete/:id', validateSession, function (req, res) {
     const owner = req.params.id; // Id of user (Authorization token)
     const admin = req.user.admin;
