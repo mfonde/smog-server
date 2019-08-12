@@ -5,35 +5,42 @@ const sequelize = require('../db');
 const Review = sequelize.import('../models/review');
 const validateSession = require('../middleware/validate-session');
 const Op = Sequelize.Op;
+const fn = Sequelize.QueryTypes;
 
 router.post('/', validateSession, (req, res) => {
     Review.create({
         movieTitle: req.body.review.movieTitle,
         poster: req.body.review.poster,
         userId: req.user.id,
-        username: req.body.review.username,
+        username: req.user.username,
         reviewRating: req.body.review.reviewRating,
         reviewText: req.body.review.reviewText,
-        imdbId: req.body.review.imdbId
+        imdbId: req.body.review.imdbId  
     })
     .then(review => res.status(200).json(review))
     .catch(err => res.status(500).json(req.errors))
 })
 
 router.get('/getall', (req, res) => {
-    Review.findAll()
+    Review.findAll({order: [
+        ['id', 'DESC']
+    ]})
     .then(review => res.status(200).json(review))
     .catch(err => res.status(500).json({error: err}))
 })
 
 router.get('/username/:username', validateSession, (req, res) => {
-    Review.findAll({where: {username: req.params.username}})
+    Review.findAll({where: {username: req.params.username}, order:[
+        ['id', 'DESC']
+    ]})
     .then(review => res.status(200).json(review))
     .catch(err => res.status(500).json({error: err}))
 })
 
 router.get('/imdbid/:imdbId', (req, res) => {
-    Review.findAll({where: {imdbId: req.params.imdbId}})
+    Review.findAll({where: {imdbId: req.params.imdbId}, order: [
+        ['id', 'DESC']
+    ]})
     .then(review => res.status(200).json(review))
     .catch(err => res.status(500).json({error: err}))
 })

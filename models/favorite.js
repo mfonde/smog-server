@@ -15,6 +15,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         imdbId: {
             type: DataTypes.STRING
+        },
+        ranking: {
+            type: DataTypes.INTEGER
         }
     })
 
