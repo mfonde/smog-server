@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
         },
         profilePic: {
             type: DataTypes.INTEGER,
-            defaultValue: 0
+            defaultValue: 0,
+            allowNull: true
         },
         admin: {
             type: DataTypes.BOOLEAN,
