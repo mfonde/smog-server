@@ -9,13 +9,13 @@ const fn = Sequelize.QueryTypes;
 
 router.post('/', validateSession, (req, res) => {
     Review.create({
-        movieTitle: req.body.review.movieTitle,
-        poster: req.body.review.poster,
+        movieTitle: req.body.movieTitle,
+        poster: req.body.poster,
         userId: req.user.id,
         username: req.user.username,
-        reviewRating: req.body.review.reviewRating,
-        reviewText: req.body.review.reviewText,
-        imdbId: req.body.review.imdbId  
+        reviewRating: req.body.reviewRating,
+        reviewText: req.body.reviewText,
+        imdbId: req.body.imdbId  
     })
     .then(review => res.status(200).json(review))
     .catch(err => res.status(500).json(req.errors))

@@ -90,10 +90,10 @@ router.put('/update/:id', validateSession, (req, res) => {
         // .catch(err => res.json({error: err}))
     } else if (req.user.id == req.params.id) {
         User.update({
-            username: req.body.user.username,
-            email: req.body.user.email,
-            password: bcrypt.hashSync(req.body.user.password, 10),
-            profilePic: req.body.user.profilePic
+            username: req.body.username,
+            email: req.body.email,
+            password: bcrypt.hashSync(req.body.password, 10),
+            profilePic: req.body.profilePic
         },
             { where: { id: req.params.id } })
             .then(user => res.status(200).json(user))
