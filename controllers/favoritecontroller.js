@@ -47,7 +47,9 @@ router.get('/myfavorites', validateSession, (req, res) => {
 // })
 
 router.get('/username/:username', validateSession, (req, res) => {
-    Favorite.findAll({ where: { username: req.params.username } })
+    Favorite.findAll({ where: { username: req.params.username }, order: [
+        ['ranking', 'DESC']
+    ] })
         .then(favorite => res.status(200).json(favorite))
         .catch(err => res.status(500).json({ error: err }))
 })
@@ -57,17 +59,32 @@ router.put('/update/:id', validateSession, (req, res) => {
     const admin = req.user.admin;
 
     if (admin == true) {
-        Favorite.update(req.body.ranking, { where: { id: favorite } })
+        Favorite.update({
+           ranking: req.body.ranking, 
+        },
+            { where: { id: req.params.id } })
             .then(rev => res.status(200).json(rev))
             .catch(err => res.json({ error: err }))
 
     } else {
-        Favorite.update(req.body.ranking, { where: { id: req.params.id, userId: req.user.id } })
+        Favorite.update({
+           ranking: req.body.ranking, 
+        },
+            { where: { id: req.params.id, userId: req.user.id } })
             .then(rev => res.status(200).json(rev))
             .catch(err => res.json({ error: err }))
 
     }
 })
+
+// router.put('/update/:id', validateSession, (req, res) => {
+//     Favorite.update({
+//         ranking: req.body.ranking,
+//     }, 
+//         {where: {id: req.params.id}})
+//     .then(fav => res.status(200).json(fav))
+//     .catch(err => res.json({error: err}))
+// })
 
 router.delete('/delete/:id', validateSession, (req, res) => {
     const favorite = req.params.id;
