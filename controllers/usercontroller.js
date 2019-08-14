@@ -48,9 +48,9 @@ router.post('/login', (req, res) => {
 })
 
 router.get('/username/:username', validateSession, (req, res) => {
-        User.findAll({where: {username: req.params.username}})
+    User.findAll({ where: { username: req.params.username } })
         .then(user => res.status(200).json(user))
-        .catch(err => res.status(500).json({error: err}))
+        .catch(err => res.status(500).json({ error: err }))
 })
 
 router.delete('/delete/:id', validateSession, function (req, res) {
@@ -82,12 +82,22 @@ router.delete('/delete/:id', validateSession, function (req, res) {
 });
 
 router.put('/update/:id', validateSession, (req, res) => {
-    const admin = req.user.admin;
+    var admin = req.user.admin;
+    var username = req.body.username;
+    var email = req.body.email;
+    var password = req.body.password;
+    var profilePic = req.body.profilePic;
 
     if (admin == true) {
-        User.update(req.body.user, { where: { id: req.params.id } })
-            .then(user => res.status(200).json(user))
-        // .catch(err => res.json({error: err}))
+        User.update(req.body, { where: { id: req.params.id } })
+            .then(user => res.status(200).json({
+                username: username,
+                email: email,
+                password: password,
+                profilePic: profilePic,
+                admin: admin
+            }))
+            .catch(err => res.json({ error: err }))
     } else if (req.user.id == req.params.id) {
         User.update({
             username: req.body.username,
@@ -96,14 +106,22 @@ router.put('/update/:id', validateSession, (req, res) => {
             profilePic: req.body.profilePic
         },
             { where: { id: req.params.id } })
-            .then(user => res.status(200).json(user))
+            .then(
+                function updateSuccess(updatedUser) {
+                    res.json({
+                        username: username,
+                        email: email,
+                        password: password,
+                        profilePic: profilePic,
+                        admin: false
+                    });
+                }
+            )
     }
     else {
-        res.status(403).send({ error: 'You Are Not Authorized To Update Users' })
-
+        res.status(403).send({ error: 'You Are Not Authorized To Update Users' });
     }
-}
-)
+})
 
 
 
