@@ -89,21 +89,22 @@ router.put('/update/:id', validateSession, (req, res) => {
     var profilePic = req.body.profilePic;
 
     if (admin == true) {
-        User.update(req.body, { where: { id: req.params.id } })
-            .then(user => res.status(200).json({
-                username: username,
-                email: email,
-                password: password,
-                profilePic: profilePic,
-                admin: admin
-            }))
-            .catch(err => res.json({ error: err }))
+        User.update({
+            username: req.body.username,
+            email: req.body.email,
+            password: bcrypt.hashSync(req.body.password, 10),
+            profilePic: req.body.profilePic,
+            admin: req.body.admin,
+        },
+            { where: { id: req.params.id } })
+            .then(user => res.status(200).json(user))
+        // .catch(err => res.json({error: err}))
     } else if (req.user.id == req.params.id) {
         User.update({
             username: req.body.username,
             email: req.body.email,
             password: bcrypt.hashSync(req.body.password, 10),
-            profilePic: req.body.profilePic
+            profilePic: req.body.profilePic,
         },
             { where: { id: req.params.id } })
             .then(
@@ -122,6 +123,15 @@ router.put('/update/:id', validateSession, (req, res) => {
         res.status(403).send({ error: 'You Are Not Authorized To Update Users' });
     }
 })
+
+// router.put('/update/:id', validateSession, (req, res) => {
+//         User.update(req.body.user, { where: { id: req.params.id } })
+//             .then(user => res.status(200).json(user))
+//         .catch(err => res.json({error: err}))
+//         },
+// )
+
+
 
 
 
