@@ -13,7 +13,7 @@ router.post('/', validateSession, (req, res) => {
         imdbId: req.body.imdbId,
         ranking: req.body.ranking
     }).then(favorite => res.status(200).json(favorite))
-    .catch(err => res.status(500).json(req.errors))
+        .catch(err => res.status(500).json(req.errors))
 })
 
 // router.post('/', (req, res) => {
@@ -27,11 +27,13 @@ router.post('/', validateSession, (req, res) => {
 // })
 
 router.get('/myfavorites', validateSession, (req, res) => {
-    Favorite.findAll({where: {userId: req.user.id}, order:[
-        ['ranking']
-    ]})
-    .then(favorite => res.status(200).json(favorite))
-    .catch(err => res.status(500).json({error: err}))
+    Favorite.findAll({
+        where: { userId: req.user.id }, order: [
+            ['ranking']
+        ]
+    })
+        .then(favorite => res.status(200).json(favorite))
+        .catch(err => res.status(500).json({ error: err }))
 })
 
 // router.get('/myfavorites', (req, res) => {
