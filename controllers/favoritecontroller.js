@@ -51,16 +51,17 @@ router.get('/username/:username', validateSession, (req, res) => {
 })
 
 router.put('/update/:id', validateSession, (req, res) => {
-    const favorite = req.params.id;
+    const id = req.params.id;
     const admin = req.user.admin;
+    console.log('hey')
 
     if (admin == true) {
-        Favorite.update(req.body.ranking, { where: { id: favorite } })
+        Favorite.update({ranking:req.body.ranking}, { where: { id: id } })
             .then(rev => res.status(200).json(rev))
             .catch(err => res.json({ error: err }))
 
     } else {
-        Favorite.update(req.body.ranking, { where: { id: req.params.id, userId: req.user.id } })
+        Favorite.update({ranking:req.body.ranking}, { where: { id: req.params.id, userId: req.user.id } })
             .then(rev => res.status(200).json(rev))
             .catch(err => res.json({ error: err }))
 
