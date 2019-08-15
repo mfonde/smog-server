@@ -85,7 +85,14 @@ router.put('/update/:id', validateSession, (req, res) => {
     const admin = req.user.admin;
 
     if (admin == true) {
-        User.update(req.body.user, { where: { id: req.params.id } })
+        User.update({
+            username: req.body.username,
+            email: req.body.email,
+            password: bcrypt.hashSync(req.body.password, 10),
+            profilePic: req.body.profilePic,
+            admin: req.body.admin, 
+        },
+            { where: { id: req.params.id } })
             .then(user => res.status(200).json(user))
         // .catch(err => res.json({error: err}))
     } else if (req.user.id == req.params.id) {
@@ -93,7 +100,7 @@ router.put('/update/:id', validateSession, (req, res) => {
             username: req.body.username,
             email: req.body.email,
             password: bcrypt.hashSync(req.body.password, 10),
-            profilePic: req.body.profilePic
+            profilePic: req.body.profilePic,
         },
             { where: { id: req.params.id } })
             .then(user => res.status(200).json(user))
@@ -104,6 +111,15 @@ router.put('/update/:id', validateSession, (req, res) => {
     }
 }
 )
+
+// router.put('/update/:id', validateSession, (req, res) => {
+//         User.update(req.body.user, { where: { id: req.params.id } })
+//             .then(user => res.status(200).json(user))
+//         .catch(err => res.json({error: err}))
+//         },
+// )
+
+
 
 
 
