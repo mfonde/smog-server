@@ -46,7 +46,7 @@ router.get('/myfavorites', validateSession, (req, res) => {
 
 router.get('/username/:username', validateSession, (req, res) => {
     Favorite.findAll({ where: { username: req.params.username }, order: [
-        ['ranking', 'DESC']
+        ['ranking']
     ] })
         .then(favorite => res.status(200).json(favorite))
         .catch(err => res.status(500).json({ error: err }))
