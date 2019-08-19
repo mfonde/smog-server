@@ -15,45 +15,45 @@ router.post('/', validateSession, (req, res) => {
         imdbId: req.body.movie.imdbId,
         plot: req.body.movie.plot
     })
-    .then(movie => res.status(200).json(movie))
-    .catch(err => res.status(500).json(req.errors))
+        .then(movie => res.status(200).json(movie))
+        .catch(err => res.status(500).json(req.errors))
 })
 
 router.get('/getall', validateSession, (req, res) => {
     Movie.findAll()
-    .then(movie => res.status(200).json(movie))
-    .catch(err => res.status(500).json({error: err}))
+        .then(movie => res.status(200).json(movie))
+        .catch(err => res.status(500).json({ error: err }))
 })
 
 router.get('/getmovie/:movietitle', (req, res) => {
-    Movie.findAll({where: {movieTitle: req.params.movietitle}})
-    .then(movie => res.status(200).json(movie))
-    .catch(err => res.status(500).json({error: err}))
+    Movie.findAll({ where: { movieTitle: req.params.movietitle } })
+        .then(movie => res.status(200).json(movie))
+        .catch(err => res.status(500).json({ error: err }))
 })
 
 router.put('/update/:id', validateSession, (req, res) => {
     const admin = req.user.admin;
 
-    if(admin == true){
-        Movie.update(req.body.movie, {where: {id: req.params.id}})
-        .then(movie => res.status(200).json(movie))
-        .catch(err => res.status(500).json({error:err}))
+    if (admin == true) {
+        Movie.update(req.body.movie, { where: { id: req.params.id } })
+            .then(movie => res.status(200).json(movie))
+            .catch(err => res.status(500).json({ error: err }))
     }
     else {
-        res.status(403).send({error: 'You Are Not Authorized To Update Movies'})
+        res.status(403).send({ error: 'You Are Not Authorized To Update Movies' })
     }
 })
 
 router.delete('/delete/:id', validateSession, (req, res) => {
     const admin = req.user.admin;
 
-    if(admin == true) {
-        Movie.destroy({where: {id: req.params.id}})
-        .then(movie => res.status(200).json(movie))
-        .catch(err => res.status(500).json({error:err}))
+    if (admin == true) {
+        Movie.destroy({ where: { id: req.params.id } })
+            .then(movie => res.status(200).json(movie))
+            .catch(err => res.status(500).json({ error: err }))
     }
     else {
-        res.status(403).send({error: 'You Are Not Authorized To Delete Movies'})
+        res.status(403).send({ error: 'You Are Not Authorized To Delete Movies' })
     }
 })
 

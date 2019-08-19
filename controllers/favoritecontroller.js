@@ -47,9 +47,11 @@ router.get('/myfavorites', validateSession, (req, res) => {
 // })
 
 router.get('/username/:username', validateSession, (req, res) => {
-    Favorite.findAll({ where: { username: req.params.username }, order: [
-        ['ranking', 'DESC']
-    ] })
+    Favorite.findAll({
+        where: { username: req.params.username }, order: [
+            ['ranking', 'DESC']
+        ]
+    })
         .then(favorite => res.status(200).json(favorite))
         .catch(err => res.status(500).json({ error: err }))
 })
@@ -60,7 +62,7 @@ router.put('/update/:id', validateSession, (req, res) => {
 
     if (admin == true) {
         Favorite.update({
-           ranking: req.body.ranking, 
+            ranking: req.body.ranking,
         },
             { where: { id: req.params.id } })
             .then(rev => res.status(200).json(rev))
@@ -68,7 +70,7 @@ router.put('/update/:id', validateSession, (req, res) => {
 
     } else {
         Favorite.update({
-           ranking: req.body.ranking, 
+            ranking: req.body.ranking,
         },
             { where: { id: req.params.id, userId: req.user.id } })
             .then(rev => res.status(200).json(rev))
