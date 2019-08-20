@@ -12,9 +12,9 @@ var sequelize = require('./db');
 
 //! Syncs sql database to ran server:
 sequelize.sync(); //TODO: When resetting all tables, put {force: true} into the parameters of sync().
-app.use(express.json());
-
+app.use(express.json({strict:false}));
 app.use(require('./middleware/headers')); //Needs to be above routes
+
 
 //! Controllers :
 var test = require('./controllers/testcontroller');

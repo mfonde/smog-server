@@ -66,15 +66,28 @@ router.get('/reviewid/:id', (req, res) => {
 router.put('/update/:id', validateSession, (req, res) => {
     const review = req.params.id;
     const admin = req.user.admin;
+    const reviewText = req.body.reviewText;
+    const reviewRating = req.body.reviewRating;
 
     if(admin == true){
-        Review.update(req.body.review, {where: {id: review}})
+        Review.update({
+            reviewText:req.body.reviewText,
+            reviewRating: req.body.reviewRating
+        }, 
+        {where: {id: review}})
         .then(rev => res.status(200).json(rev))
         .catch(err => res.json({error: err}))
 
     } else {
-        Review.update(req.body.review, {where: {id: req.params.id, userId: req.user.id}})
-        .then(rev => res.status(200).json(rev))
+        Review.update({
+            reviewText: req.body.reviewText,
+            reviewRating: req.body.reviewRating
+        }, 
+        {where: {id: req.params.id, userId: req.user.id}})
+        .then(rev => res.status(200).json({
+            reviewText: reviewText,
+            reviewRating: reviewRating
+        }))
         .catch(err => res.json({error: err}))
 
     }

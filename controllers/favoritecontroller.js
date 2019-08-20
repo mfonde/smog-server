@@ -4,6 +4,8 @@ const sequelize = require('../db');
 const Favorite = sequelize.import('../models/favorite');
 const validateSession = require('../middleware/validate-session');
 
+// Favorite.sync({force:true})
+
 router.post('/', validateSession, (req, res) => {
     Favorite.create({
         movieTitle: req.body.movieTitle,
