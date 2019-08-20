@@ -72,13 +72,17 @@ router.get('/reviewid/:id', (req, res) => {
 router.put('/update/:id', validateSession, (req, res) => {
     const review = req.params.id;
     const admin = req.user.admin;
+    const reviewText = req.body.reviewText;
+    const reviewRating = req.body.reviewRating;
 
     if (admin == true) {
         Review.update({
+
             reviewText: req.body.reviewText,
             reviewRating: req.body.reviewRating
         },
             { where: { id: review } })
+
             .then(rev => res.status(200).json(rev))
             .catch(err => res.json({ error: err }))
 
@@ -87,8 +91,13 @@ router.put('/update/:id', validateSession, (req, res) => {
             reviewText: req.body.reviewText,
             reviewRating: req.body.reviewRating
         },
+
             { where: { id: req.params.id, userId: req.user.id } })
-            .then(rev => res.status(200).json(rev))
+            .then(rev => res.status(200).json({
+                reviewText: reviewText,
+                reviewRating: reviewRating
+            }))
+
             .catch(err => res.json({ error: err }))
 
     }
