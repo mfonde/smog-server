@@ -8,13 +8,13 @@ var app = express(); //! Creates an instance of express.
 var sequelize = require('./db');
 
 //! Body parser for JSON responses in Postman :
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 
 //! Syncs sql database to ran server:
 sequelize.sync(); //TODO: When resetting all tables, put {force: true} into the parameters of sync().
-app.use(bodyParser.json());
-
+app.use(express.json({strict:false}));
 app.use(require('./middleware/headers')); //Needs to be above routes
+
 
 //! Controllers :
 var test = require('./controllers/testcontroller');

@@ -4,6 +4,8 @@ const sequelize = require('../db');
 const Favorite = sequelize.import('../models/favorite');
 const validateSession = require('../middleware/validate-session');
 
+// Favorite.sync({force:true})
+
 router.post('/', validateSession, (req, res) => {
     Favorite.create({
         movieTitle: req.body.movieTitle,
@@ -53,22 +55,20 @@ router.get('/username/:username', validateSession, (req, res) => {
 })
 
 router.put('/update/:id', validateSession, (req, res) => {
-    const favorite = req.params.id;
+    const id = req.params.id;
     const admin = req.user.admin;
+    console.log('hey')
 
     if (admin == true) {
-        Favorite.update({
-           ranking: req.body.ranking, 
-        },
-            { where: { id: req.params.id } })
+
+        Favorite.update({ranking:req.body.ranking}, { where: { id: id } })
+
             .then(rev => res.status(200).json(rev))
             .catch(err => res.json({ error: err }))
 
     } else {
-        Favorite.update({
-           ranking: req.body.ranking, 
-        },
-            { where: { id: req.params.id, userId: req.user.id } })
+
+        Favorite.update({ranking:req.body.ranking}, { where: { id: req.params.id, userId: req.user.id } })
             .then(rev => res.status(200).json(rev))
             .catch(err => res.json({ error: err }))
 
